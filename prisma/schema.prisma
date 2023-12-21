@@ -1,0 +1,66 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+
+model User {
+  id       String @id @default(uuid())
+  username String
+  password String
+  role String
+  comments Comment []
+ createdAt DateTime @default(now()) 
+ updatedAt DateTime @updatedAt
+  
+}
+ enum genre{
+COMEDY
+ACTION
+ROMANCE
+ }
+
+
+model MOVIE {
+  id    String @id @default(uuid())
+  title String
+  duration Int
+  rating Float
+  Genre genre
+  releaseData DateTime @default(now())
+  comments Comment []
+}
+
+
+model Comment{
+  id String @id@default(uuid())
+text String
+movield String
+movie MOVIE @relation(fields: [movield],references: [id])
+userId String
+user User @relation(fields: [userId],references: [id])
+
+
+@@index([userId])
+@@index([movield])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
